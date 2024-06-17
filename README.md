@@ -1,9 +1,13 @@
-# wiroai
+# Wiro AI
 
-This project started with the intention of healing people who are tired from their daily life with **music**. It uses generative AI to generate music that matches the day's vibe.
+Introducing **Wiro AI** – your personal music therapist. Derived from the Korean word "위로" meaning "comfort," Wiro AI is designed to create personalized music that heals and soothes the soul. Using the power of generative AI, Wiro AI asks you a few questions each day about your feelings and experiences. Based on your responses, it crafts unique music tailored to your emotional state, offering you a moment of tranquility and reflection. Built with Flutter, and leveraging chat agents from Wit.ai along with cutting-edge generative AI APIs, Wiro AI aims to bring harmony and peace to your daily life. Experience the comforting embrace of music with Wiro AI.
+
+## How the wiro AI works!
+- Demo video
+- HLD if we can make one
 
 
-## Setting up Quokka Flutter Project
+## Setting up Wiro AI Flutter Project
 
 ### Windows
 
@@ -19,14 +23,14 @@ This project started with the intention of healing people who are tired from the
    - Download and install [Visual Studio Code](https://code.visualstudio.com/).
    - Install the Flutter and Dart plugins in VSCode.
 
-3. **Clone Quokka Repository:**
-   - Clone the Quokka repository from [GitHub](https://github.com/WiroArtificialIntelligence/wiroai.git) using Git or download the ZIP file and extract it.
+3. **Clone Wiro AI Repository:**
+   - Clone the Wiro AI repository from [GitHub](https://github.com/WiroArtificialIntelligence/wiroai.git) using Git or download the ZIP file and extract it.
      ```bash
      git clone https://github.com/WiroArtificialIntelligence/wiroai.git
      ```
 
 4. **Install Dependencies:**
-   - Open a terminal and navigate to the Quokka project directory.
+   - Open a terminal and navigate to the Wiro AI project directory.
    - Run the following command to install all project dependencies.
      ```bash
      flutter pub get
@@ -34,7 +38,7 @@ This project started with the intention of healing people who are tired from the
 
 5. **Run the App:**
    - Connect your device or start an emulator.
-   - Run the following command in the terminal to launch the Quokka app.
+   - Run the following command in the terminal to launch the Wiro AI app.
      ```bash
      flutter run
      ```
@@ -65,14 +69,14 @@ This project started with the intention of healing people who are tired from the
    - Download and install [Visual Studio Code](https://code.visualstudio.com/).
    - Install the Flutter and Dart plugins in VSCode.
 
-4. **Clone Quokka Repository:**
-   - Clone the Quokka repository from [GitHub](https://github.com/WiroArtificialIntelligence/wiroai.git) using Git or download the ZIP file and extract it.
+4. **Clone Wiro AI Repository:**
+   - Clone the Wiro AI repository from [GitHub](https://github.com/WiroArtificialIntelligence/wiroai.git) using Git or download the ZIP file and extract it.
      ```bash
      git clone https://github.com/WiroArtificialIntelligence/wiroai.git
      ```
 
 5. **Install Dependencies:**
-   - Open a terminal and navigate to the Quokka project directory.
+   - Open a terminal and navigate to the Wiro AI project directory.
    - Run the following command to install all project dependencies.
      ```bash
      flutter pub get
