@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:wiroai/screens/intro_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _resetSharedPreferences();
   runApp(const MainApp());
+}
+
+Future<void> _resetSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.clear(); // Clear all data from SharedPreferences
 }
 
 class MainApp extends StatelessWidget {
@@ -12,6 +20,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: IntroScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
