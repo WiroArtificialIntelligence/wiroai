@@ -196,7 +196,7 @@ class StartMusicButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white, backgroundColor: const Color(0xFF246EE9),
+        foregroundColor: Colors.white, backgroundColor: Colors.black,
       ),
       onPressed: onPressed,
       child: const Text('Start our music'),

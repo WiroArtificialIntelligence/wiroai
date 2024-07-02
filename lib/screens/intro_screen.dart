@@ -11,78 +11,69 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,  // White background color
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),  // Horizontal padding
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,  // Center content vertically
-          children: [
-            // Title at the top
-            Text(
-              'Welcome to Wiro AI',
-              style: TextStyle(
-                fontSize: 28.0,  // Title font size
-                fontWeight: FontWeight.bold,
-                color: Colors.black,  // Title color
-              ),
-            ),
-            SizedBox(height: 30),  // Spacer between title and blue square
-
-            // Blue Square
-            Container(
-              width: MediaQuery.of(context).size.width * 0.8,  // 80% of screen width
-              height: MediaQuery.of(context).size.height * 0.5,  // 50% of screen height
-              decoration: BoxDecoration(
-                color: const Color(0xFF246EE9),  // Blue color
-                borderRadius: BorderRadius.circular(20.0),  // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),  // Shadow color
-                    offset: Offset(0, 4),  // Shadow position
-                    blurRadius: 10,  // Shadow blur
-                  ),
-                ],
-              ),
-              child: Center(
-                child: Text(
-                  'Wiro AI',  // Text inside the blue square
-                  style: TextStyle(
-                    fontSize: 32.0,  // Text size
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,  // Text color
-                  ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background.png'),  // Set background image
+            fit: BoxFit.cover,  // Cover the entire screen
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05, right: MediaQuery.of(context).size.width * 0.05, top: MediaQuery.of(context).size.height * 0.2),  // Horizontal padding
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,  // Align content to the left
+            mainAxisAlignment: MainAxisAlignment.start,  // Align content to the top
+            children: [
+              // Title at the top
+              const Text(
+                'Wiro AI',
+                style: TextStyle(
+                  fontSize: 60.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFDC788A),  // Title color
                 ),
               ),
-            ),
-            SizedBox(height: 30),  // Spacer between blue square and button
-
-            // Start Button
-            GestureDetector(
-              onTap: () => _handleStartTap(context),  // Call _handleStartTap method when tapped
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.8,  // 80% of screen width
-                height: 60,  // Fixed height for the button
-                decoration: BoxDecoration(
-                  color: Colors.white,  // Button background color
-                  border: Border.all(
-                    color: Colors.black,  // Border color
-                    width: 2,  // Border width
-                  ),
-                  borderRadius: BorderRadius.circular(30),  // Rounded corners
+              const Text(
+                'Best AI',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // Title color
                 ),
-                child: const Center(
-                  child: Text(
-                    'Start with the music!',  // Button text
-                    style: TextStyle(
-                      fontSize: 18,  // Font size of the text
-                      fontWeight: FontWeight.bold,  // Font weight of the text
-                      color: Colors.black,  // Text color
+              ),
+              const Text(
+                'For Music',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFDC788A),  // Title color
+                ),
+              ),
+              const Text(
+                'And Life',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // Title color
+                ),
+              ),
+              const SizedBox(height: 100),  // Spacer for the button
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () => _handleStartTap(context),  // Call the _handleStartTap method
+                  child: const Text("Let's Start", style: TextStyle(color: Colors.white)),  // Start button text color
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8CDAD8),  // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),  // Rounded corners
                     ),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),  // Button padding
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -105,14 +96,14 @@ class IntroScreen extends StatelessWidget {
         // Navigate to SetupTimelineScreen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => setup_timeline.SetupTimelineScreen()),
+          MaterialPageRoute(builder: (context) => const setup_timeline.SetupTimelineScreen()),
         );
       }
     } else {
       // Navigate to InitialStageScreen
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => initial_stage.InitialStageScreen()),
+        MaterialPageRoute(builder: (context) => const initial_stage.InitialStageScreen()),
       );
     }
   }
@@ -120,7 +111,7 @@ class IntroScreen extends StatelessWidget {
 
 // Main function
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: IntroScreen(),
   ));
 }
