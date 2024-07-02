@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'waiting_screen.dart';  // Import the WaitingScreen
+import 'package:wiroai/utils/time_utils.dart';
 
 class SetupTimelineScreen extends StatefulWidget {
   const SetupTimelineScreen({super.key});
@@ -52,7 +53,7 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
 
   void _validateTimeslots() {
     for (int i = 1; i < _selectedTimeslots.length; i++) {
-      if (_compareTimes(_selectedTimeslots[i - 1], _selectedTimeslots[i])) {
+      if (TimeUtils.compareTimes(_selectedTimeslots[i - 1], _selectedTimeslots[i])) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${_labels[i]} must be later than ${_labels[i - 1]}')),
         );
@@ -60,16 +61,6 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
       }
     }
     _onCompleteSetup();
-  }
-
-  bool _compareTimes(String time1, String time2) {
-    return _convertToMinutes(time1) >= _convertToMinutes(time2);
-  }
-
-  int _convertToMinutes(String time) {
-    final timeFormat = DateFormat('hh:mm a');
-    final parsedTime = timeFormat.parse(time);
-    return parsedTime.hour * 60 + parsedTime.minute;
   }
 
   void _onCompleteSetup() {
@@ -88,77 +79,132 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Question text at the top
-            const SizedBox(height: 75), 
-            const Text(
-              'Please set up the timeline for the following events:',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            const SizedBox(height: 75),
+            const QuestionText(),
+            const SizedBox(height: 20),
+            TimeslotSetup(
+              timeslots: _timeslots,
+              labels: _labels,
+              selectedTimeslots: _selectedTimeslots,
+              onTimeslotChanged: (index, newValue) {
+                setState(() {
+                  _selectedTimeslots[index] = newValue;
+                  if (index < 3) {
+                    _validateTimeslots();
+                  }
+                });
+              },
             ),
-            const SizedBox(height: 20),  // Add space between the question and the slots
-            Column(
-              children: List.generate(4, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 40.0), // Increased gap between rows
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _labels[index],
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                      DropdownButton<String>(
-                        value: _selectedTimeslots[index],
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedTimeslots[index] = newValue!;
-                            if (index < 3) {
-                              _validateTimeslots();  // Validate timeslots whenever a selection is changed
-                            }
-                          });
-                        },
-                        items: _timeslots.map<DropdownMenuItem<String>>((String timeslot) {
-                          return DropdownMenuItem<String>(
-                            value: timeslot,
-                            child: Text(timeslot),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ),
-            const Text(
-              "This setup is for alert purpose to schedule your answering time for music generation! Feel Free to schedule your answer time and music gift time!",
-              style: TextStyle(
-                fontSize: 15.0,  // Smaller text size
-                color: Colors.grey,  // Gray color
-              ),
-            ),
-            SizedBox(height: 20),
-            Divider(
-              color: Colors.grey,
-            ),
-            // Add space between the paragraph and the floating action button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: const Color(0xFF246EE9), // foreground
-              ),
+            const InstructionText(),
+            const SizedBox(height: 20),
+            const Divider(color: Colors.grey),
+            const SizedBox(height: 20),
+            StartMusicButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WaitingScreen()),  // Navigate to WaitingScreen
+                  MaterialPageRoute(builder: (context) => WaitingScreen()),
                 );
               },
-              child: const Text('Start our music'),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class QuestionText extends StatelessWidget {
+  const QuestionText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      'Please set up the timeline for the following events:',
+      style: TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    );
+  }
+}
+
+class TimeslotSetup extends StatelessWidget {
+  final List<String> timeslots;
+  final List<String> labels;
+  final List<String> selectedTimeslots;
+  final Function(int, String) onTimeslotChanged;
+
+  const TimeslotSetup({
+    Key? key,
+    required this.timeslots,
+    required this.labels,
+    required this.selectedTimeslots,
+    required this.onTimeslotChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(4, (index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 40.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                labels[index],
+                style: TextStyle(fontSize: 18.0),
+              ),
+              DropdownButton<String>(
+                value: selectedTimeslots[index],
+                onChanged: (String? newValue) {
+                  onTimeslotChanged(index, newValue!);
+                },
+                items: timeslots.map<DropdownMenuItem<String>>((String timeslot) {
+                  return DropdownMenuItem<String>(
+                    value: timeslot,
+                    child: Text(timeslot),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+
+class InstructionText extends StatelessWidget {
+  const InstructionText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      "This setup is for alert purpose to schedule your answering time for music generation! Feel Free to schedule your answer time and music gift time!",
+      style: TextStyle(
+        fontSize: 15.0,
+        color: Colors.grey,
+      ),
+    );
+  }
+}
+
+class StartMusicButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const StartMusicButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, backgroundColor: const Color(0xFF246EE9),
+      ),
+      onPressed: onPressed,
+      child: const Text('Start our music'),
     );
   }
 }
