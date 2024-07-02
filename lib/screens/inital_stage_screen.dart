@@ -64,6 +64,7 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
   }
 
   void _goToNextStep() {
+    
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SetupTimelineScreen()),

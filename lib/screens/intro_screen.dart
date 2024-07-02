@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiroai/screens/inital_stage_screen.dart' as initial_stage; // Use alias
 import 'package:wiroai/screens/setup_timeline_screen.dart' as setup_timeline; // Use alias
+import 'package:wiroai/screens/questionaire_stage_screen.dart' as questionaire_stage; // Import QuestionaireStageScreen with alias
 
 // Intro Screen Definition
 class IntroScreen extends StatelessWidget {
@@ -95,23 +96,10 @@ class IntroScreen extends StatelessWidget {
 
     if (answers != null && answers.length == 4) {
       if (isSetupComplete) {
-        // Show alert dialog indicating setup is complete
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Setup Complete'),
-              content: Text('You are all set up!'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+        // Navigate to QuestionaireStageScreen if setup is complete
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => questionaire_stage.QuestionaireStageScreen()),
         );
       } else {
         // Navigate to SetupTimelineScreen

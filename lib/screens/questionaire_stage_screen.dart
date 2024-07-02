@@ -8,7 +8,7 @@ class QuestionaireStageScreen extends StatefulWidget {
 }
 
 class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
-  final List<String> _messages = [];  // List to hold chat messages
+  final List<Map<String, dynamic>> _messages = [];  // List to hold chat messages and associated actions
   final TextEditingController _messageController = TextEditingController();  // Controller for the text input field
   final List<String> _answers = List.filled(4, '');  // List to hold answers
   final List<String> _questions = [
@@ -23,7 +23,6 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
   @override
   void initState() {
     super.initState();
-     _loadMessages(); // Load saved messages
     _loadAnswers();
   }
 
@@ -38,51 +37,59 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
 
     print(prefs.getKeys());
 
+    if (hour == 0) {
+      // Clear all saved preferences if hour is zero
+      await prefs.clear();
+      setState(() {
+        _messages.clear();
+      });
+      return;
+    }
+
     int morningHour = convertTime(morningSlot);
     int afternoonHour = convertTime(afternoonSlot);
     int eveningHour = convertTime(eveningSlot);
     int musicHour = convertTime(musicSlot);
 
-    if(hour < morningHour){
+    if (hour < morningHour) {
       _lockPrompt();
-    } else if(hour >= morningHour && prefs.getString("answer_0") == null){
+    } else if (hour >= morningHour && prefs.getString("answer_0") == null) {
       _unlockPrompt();
       _showQuestion(0);
-    } else if(hour < afternoonHour){
+    } else if (hour < afternoonHour) {
       _lockPrompt();
-    } else if(hour >= afternoonHour && prefs.getString("answer_1") == null){
+    } else if (hour >= afternoonHour && prefs.getString("answer_1") == null) {
       _unlockPrompt();
       _showQuestion(1);
-    } else if(hour < eveningHour){
+    } else if (hour < eveningHour) {
       _lockPrompt();
-    } else if(hour >= eveningHour && prefs.getString("answer_2") == null){
+    } else if (hour >= eveningHour && prefs.getString("answer_2") == null) {
       _unlockPrompt();
       _showQuestion(2);
-    } else if(hour < musicHour){
+    } else if (hour < musicHour) {
       _lockPrompt();
     } else {
-      // showMusic();
-    }
-  }
-
-  void _loadMessages() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? savedMessages = prefs.getStringList('messages');
-    if (savedMessages != null) {
-      setState(() {
-        _messages.addAll(savedMessages);
-      });
+      _showMusic();  // Call the method to show music
     }
   }
 
   void _saveMessages() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('messages', _messages);
+    final savedMessages = _messages.map((message) {
+      final buttonText = message['buttonText'] ?? '';
+      final isUserMessage = message['isUserMessage'] ?? false;
+      return '${message['text']}|$buttonText|${isUserMessage ? 'user' : 'system'}';
+    }).toList();
+    await prefs.setStringList('messages', savedMessages);
   }
 
   void _showQuestion(int index) {
     setState(() {
-      _messages.add(_questions[index]);
+      _messages.add({
+        'text': _questions[index],
+        'buttonText': null,
+        'isUserMessage': false,  // System message
+      });
       _currentQuestionIndex = index;
     });
   }
@@ -91,7 +98,11 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     final message = _messageController.text.trim();
     if (message.isNotEmpty && _canType) {
       setState(() {
-        _messages.add(message);  // Add the message to the list
+        _messages.add({
+          'text': message,
+          'buttonText': null,
+          'isUserMessage': true,  // User message
+        });  // Add the message to the list
         _answers[_currentQuestionIndex] = message;  // Save the answer
         _canType = false;  // Disable typing until the next question appears
       });
@@ -108,7 +119,6 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
   }
 
   int convertTime(String time) {
-    print(time);
     final timeFormat = RegExp(r'(\d{1,2}):(\d{2})\s(AM|PM)');
     final match = timeFormat.firstMatch(time);
     
@@ -140,6 +150,26 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     });
   }
 
+  void _showMusic() {
+    setState(() {
+      _messages.add({
+        'text': 'Here is the music!',
+        'buttonText': 'Listen to Music',
+        'isUserMessage': false,  // System message
+      });
+    });
+  }
+
+  void _listenToMusic() async {
+    // const url = 'https://example.com/music';  // Replace with your music URL
+    // if (await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
+    print("HELLO");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,9 +191,38 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
               padding: EdgeInsets.all(8.0),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                final isUserMessage = (index % 2) != 0;  // Alternate between user and system messages
+                final message = _messages[index];
+                final text = message['text'];
+                final buttonText = message['buttonText'];
+                final isUserMessage = message['isUserMessage'] ?? false;
+
+                if (buttonText != null) {
+                  return Column(
+                    crossAxisAlignment: isUserMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    children: [
+                      TextBubble(
+                        message: text,
+                        fromUser: isUserMessage,  // Show message on the correct side
+                      ),
+                      SizedBox(height: 10.0),  // Space between text bubble and button
+                      if (!isUserMessage)  // Show button only for system messages
+                        ElevatedButton(
+                          onPressed: _listenToMusic,  // Open music link
+                          child: Text(buttonText, style: TextStyle(color: Colors.white)),  // Set button text color to white
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF246EE9),  // Button color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                          ),
+                        ),
+                    ],
+                  );
+                }
+
                 return TextBubble(
-                  message: _messages[index],
+                  message: text,
                   fromUser: isUserMessage,  // Set to true for user messages, false for system messages
                 );
               },
