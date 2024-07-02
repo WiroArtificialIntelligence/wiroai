@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'waiting_screen.dart';  // Import the WaitingScreen
+import 'questionaire_stage_screen.dart';  // Import the QuestionaireStageScreen
 import 'package:wiroai/utils/time_utils.dart';
 
 class SetupTimelineScreen extends StatefulWidget {
   const SetupTimelineScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SetupTimelineScreenState createState() => _SetupTimelineScreenState();
 }
 
@@ -40,27 +38,26 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
   void _saveSetupComplete() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
-    // Convert the list of selected timeslots and labels to a Map
-    Map<String, String> timeslotMap = {};
-    for (int i = 0; i < _labels.length; i++) {
-      timeslotMap[_labels[i]] = _selectedTimeslots[i];
-    }
+    // Store each timeslot with its corresponding label in SharedPreferences
+    prefs.setString('morning', _selectedTimeslots[0]);
+    prefs.setString('afternoon', _selectedTimeslots[1]);
+    prefs.setString('evening', _selectedTimeslots[2]);
+    prefs.setString('music', _selectedTimeslots[3]);
     
-    // Store the Map as a JSON string in SharedPreferences
-    prefs.setString('timeslotMap', timeslotMap.toString());
     prefs.setBool('setupComplete', true);
   }
 
-  void _validateTimeslots() {
+    bool _validateTimeslots() {
     for (int i = 1; i < _selectedTimeslots.length; i++) {
       if (TimeUtils.compareTimes(_selectedTimeslots[i - 1], _selectedTimeslots[i])) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${_labels[i]} must be later than ${_labels[i - 1]}')),
         );
-        return;
+        return false;
       }
     }
     _onCompleteSetup();
+    return true;
   }
 
   void _onCompleteSetup() {
@@ -89,9 +86,6 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
               onTimeslotChanged: (index, newValue) {
                 setState(() {
                   _selectedTimeslots[index] = newValue;
-                  if (index < 3) {
-                    _validateTimeslots();
-                  }
                 });
               },
             ),
@@ -101,10 +95,11 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
             const SizedBox(height: 20),
             StartMusicButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => WaitingScreen()),
-                );
+                if( _validateTimeslots())
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => QuestionaireStageScreen()),  // Navigate to QuestionaireStageScreen
+                  );
               },
             ),
           ],
