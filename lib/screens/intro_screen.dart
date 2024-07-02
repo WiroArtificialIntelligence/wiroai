@@ -11,62 +11,69 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,  // Black background color
-      body: Padding(
-        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05, right: MediaQuery.of(context).size.width * 0.05, top: MediaQuery.of(context).size.height * 0.2),  // Horizontal padding
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,  // Align content to the left
-          mainAxisAlignment: MainAxisAlignment.start,  // Align content to the top
-          children: [
-            // Title at the top
-            const Text(
-              'Wiro AI',
-              style: TextStyle(
-                fontSize: 60.0,  // Title font size
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFDC788A),  // Title color
-              ),
-            ),
-            const Text(
-              'Best AI',
-              style: TextStyle(
-                fontSize: 55.0,  // Title font size
-                fontWeight: FontWeight.bold,
-                color: Colors.white,  // Title color
-              ),
-            ),
-            const Text(
-              'For Music',
-              style: TextStyle(
-                fontSize: 55.0,  // Title font size
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFDC788A),  // Title color
-              ),
-            ),
-            const Text(
-              'And Life',
-              style: TextStyle(
-                fontSize: 55.0,  // Title font size
-                fontWeight: FontWeight.bold,
-                color: Colors.white,  // Title color
-              ),
-            ),
-            const SizedBox(height: 100),  // Spacer for the button
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () => _handleStartTap(context),  // Call the _handleStartTap method
-                child: const Text("Let's Start", style: TextStyle(color: Colors.white)),  // Start button text color
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8CDAD8),  // Button color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),  // Rounded corners
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),  // Button padding
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background.png'),  // Set background image
+            fit: BoxFit.cover,  // Cover the entire screen
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05, right: MediaQuery.of(context).size.width * 0.05, top: MediaQuery.of(context).size.height * 0.2),  // Horizontal padding
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,  // Align content to the left
+            mainAxisAlignment: MainAxisAlignment.start,  // Align content to the top
+            children: [
+              // Title at the top
+              const Text(
+                'Wiro AI',
+                style: TextStyle(
+                  fontSize: 60.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFDC788A),  // Title color
                 ),
               ),
-            ),
-          ],
+              const Text(
+                'Best AI',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // Title color
+                ),
+              ),
+              const Text(
+                'For Music',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFDC788A),  // Title color
+                ),
+              ),
+              const Text(
+                'And Life',
+                style: TextStyle(
+                  fontSize: 55.0,  // Title font size
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // Title color
+                ),
+              ),
+              const SizedBox(height: 100),  // Spacer for the button
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () => _handleStartTap(context),  // Call the _handleStartTap method
+                  child: const Text("Let's Start", style: TextStyle(color: Colors.white)),  // Start button text color
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8CDAD8),  // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),  // Rounded corners
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),  // Button padding
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
