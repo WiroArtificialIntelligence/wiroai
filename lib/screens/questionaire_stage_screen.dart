@@ -182,7 +182,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
           'Chat',
           style: TextStyle(color: Colors.white),  // Set text color to white
         ),
-        backgroundColor: Color(0xFF246EE9),  // AppBar color
+        backgroundColor: Colors.black,  // AppBar color
       ),
       body: Column(
         children: [
@@ -210,7 +210,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                           onPressed: _listenToMusic,  // Open music link
                           child: Text(buttonText, style: TextStyle(color: Colors.white)),  // Set button text color to white
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF246EE9),  // Button color
+                            backgroundColor: Colors.black,  // Button color
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -254,7 +254,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                   onPressed: _canType ? _sendMessage : null,  // Disable the send button based on _canType
                   child: Icon(Icons.send, color: Colors.white),  // Send button icon
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF246EE9),  // Send button color
+                    backgroundColor: Color(0xFFDC788A),  // Send button color
                     shape: CircleBorder(),  // Circular shape for the button
                     padding: EdgeInsets.all(12.0),  // Padding for the button
                   ),

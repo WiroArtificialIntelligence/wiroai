@@ -84,7 +84,7 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
               width: 200.0,
               height: 200.0,
               decoration: BoxDecoration(
-                color: Color(0xFF246EE9).withOpacity(0.4),
+                color: Colors.black,
                 shape: BoxShape.circle,
               ),
             ),
@@ -114,10 +114,21 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
             SizedBox(height: 30.0), // Space between text input and button
             // Show button after all questions are answered
             if (_currentQuestionIndex == _questions.length - 1)
-              ElevatedButton(
-                onPressed: _goToNextStep,
-                child: Text('Go to Next Step'),
+            ElevatedButton(
+              onPressed: _goToNextStep,
+              child: Text(
+                'Go to Next Step',
+                style: TextStyle(color: Colors.white),  // Set text color to white
               ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,  // Set button color to black
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),  // Rounded corners
+                ),
+                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),  // Button padding
+              ),
+            )
+
           ],
         ),
       ),
