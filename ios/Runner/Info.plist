@@ -28,6 +28,11 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<!--
+		permission for sotrage
+	-->
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Describe why your app needs access to the documents folder</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

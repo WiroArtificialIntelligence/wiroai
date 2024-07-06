@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:wiroai/modules/video_composer_service.dart';
 
 class MusicScreen extends StatefulWidget {
@@ -10,18 +13,39 @@ class MusicScreen extends StatefulWidget {
 class _MusicScreenState extends State<MusicScreen> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   bool _isVideoShared = false;
+  String? _filePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _setPath();
+  }
+
+  Future<void> _setPath() async {
+    final Directory dir = await getApplicationDocumentsDirectory();
+    _filePath = '${dir.path}/output.mp3';
+  }
 
   Future<void> _playMusic() async {
-    print("play music");
-    await _audioPlayer.play("assets/placeholder.mp3");
+    if (_filePath == null) {
+      print('File path is null');
+      return;
+    }
+    print("play music from $_filePath");
+    try {
+      await _audioPlayer.play(DeviceFileSource(_filePath!));
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   Future<void> _shareToTikTok() async {
     if (!_isVideoShared) {
       // Generate and share the video
       final videoComposerService = VideoComposerService(
-        imagePath: 'assets/image/wiroAiContent.jpg',
-        audioPath: 'assets/placeholder.mp3', outputPath: 'assets/output/video.mp4',
+        imagePath: 'image/wiroAiContent.jpg',
+        audioPath: _filePath!,
+        outputPath: 'output/video.mp4',
       );
       // await videoComposerService.createAndShareVideoToTikTok();
       // setState(() {
@@ -58,7 +82,7 @@ class _MusicScreenState extends State<MusicScreen> {
             SizedBox(height: 20),
             Text(
               'Now Playing: Song Name',
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             SizedBox(height: 20),
             ElevatedButton(

@@ -7,32 +7,35 @@ class ApiService {
   fetchMusic(String morning, String afternoon, String evening) async {
     try {
       final Map<String, String> body = {
-        'morning': morning,
-        'afternoon': afternoon,
-        'evening': evening,
+        'message':
+            "Morning: $morning, Afternoon: $afternoon, Evening: $evening",
       };
 
+      print("fuck");
       final response = await http.post(
         Uri.parse(baseUrl),
-        body: json.encode(body),
-        headers: <String, String> {
+        headers: <String, String>{
           'Content-Type': 'application/json',
-        }
+        },
+        body: json.encode(body),
       );
 
-      if(response.statusCode == 200) {
-
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        print('received 200');
         return APIResponse(
           success: true,
+          data: responseData['audio'],
           errorMessage: "",
         );
       } else {
         return APIResponse(
-            success: false,
-            errorMessage: 'Failed to fetch music. Status code: ${response.statusCode}',
+          success: false,
+          errorMessage:
+              'Failed to fetch music. Status code: ${response.statusCode}',
         );
       }
-    } catch(e) {
+    } catch (e) {
       return APIResponse(
         data: null,
         success: false,
