@@ -44,15 +44,12 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
 
       // Get the directory to save the file
       Directory dir = await getApplicationDocumentsDirectory();
-      // print(dir);
       String dirPath = '${dir.path}/$fileName';
-      // File file = File('$dir/$fileName');
       File file = File(dirPath);
 
       // Write bytes to the file
       await file.writeAsBytes(bytes);
 
-      // print('MP3 file saved to $dir/$fileName');
       print('MP3 file saved to $dirPath');
     } catch (e) {
       print('An error occurred while decoding or writing the file: $e');
@@ -66,11 +63,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     String eveningSlot = prefs.getString("evening") ?? "";
     String musicSlot = prefs.getString("music") ?? "";
     final now = DateTime.now();
-    print(now.hour);
-    // final hour = now.hour;
-    final hour = 23;
-
-    print(prefs.getKeys());
+    final hour = now.hour;
 
     if (hour == 0) {
       // Clear all saved preferences if hour is zero
@@ -101,17 +94,13 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       _unlockPrompt();
       _showQuestion(2);
     } else if (hour < musicHour) {
-      print(hour);
-      print(musicHour);
       _lockPrompt();
     } else {
-      print("calling fetchMusic");
       ApiService apiService = ApiService();
       final response = await apiService.fetchMusic(
           prefs.getString("answer_0") ?? '',
           prefs.getString("answer_1") ?? '',
           prefs.getString("answer_2") ?? '');
-      print(response.success);
       if (response.success) {
         await decodeBase64ToMp3(response.data, 'output.mp3');
         _unlockPrompt();

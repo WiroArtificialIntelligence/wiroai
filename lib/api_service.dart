@@ -10,8 +10,6 @@ class ApiService {
         'message':
             "Morning: $morning, Afternoon: $afternoon, Evening: $evening",
       };
-
-      print("fuck");
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: <String, String>{
@@ -22,7 +20,6 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print('received 200');
         return APIResponse(
           success: true,
           data: responseData['audio'],

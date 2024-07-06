@@ -31,7 +31,6 @@ class _MusicScreenState extends State<MusicScreen> {
       print('File path is null');
       return;
     }
-    print("play music from $_filePath");
     try {
       await _audioPlayer.play(DeviceFileSource(_filePath!));
     } catch (e) {
