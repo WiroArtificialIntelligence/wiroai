@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiroai/widgets/text_bubble.dart';
+import 'music_screen.dart';  // Import the MusicScreen
 
 class QuestionaireStageScreen extends StatefulWidget {
   @override
@@ -160,14 +161,8 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     });
   }
 
-  void _listenToMusic() async {
-    // const url = 'https://example.com/music';  // Replace with your music URL
-    // if (await canLaunch(url)) {
-    //   await launch(url);
-    // } else {
-    //   throw 'Could not launch $url';
-    // }
-    print("HELLO");
+  void _listenToMusic() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MusicScreen()));
   }
 
   @override
@@ -207,7 +202,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                       SizedBox(height: 10.0),  // Space between text bubble and button
                       if (!isUserMessage)  // Show button only for system messages
                         ElevatedButton(
-                          onPressed: _listenToMusic,  // Open music link
+                          onPressed: _listenToMusic,  // Navigate to MusicScreen
                           child: Text(buttonText, style: TextStyle(color: Colors.white)),  // Set button text color to white
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,  // Button color
@@ -267,3 +262,4 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     );
   }
 }
+
