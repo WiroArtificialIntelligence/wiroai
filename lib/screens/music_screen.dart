@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:wiroai/modules/video_composer_service.dart';
 
 class MusicScreen extends StatefulWidget {
   @override
@@ -28,30 +27,21 @@ class _MusicScreenState extends State<MusicScreen> {
 
   Future<void> _playMusic() async {
     if (_filePath == null) {
-      print('File path is null');
+      // print('File path is null');
       return;
     }
     try {
       await _audioPlayer.play(DeviceFileSource(_filePath!));
     } catch (e) {
-      print('Error: $e');
+      // print('Error: $e');
     }
   }
 
   Future<void> _shareToTikTok() async {
     if (!_isVideoShared) {
-      // Generate and share the video
-      final videoComposerService = VideoComposerService(
-        imagePath: 'image/wiroAiContent.jpg',
-        audioPath: _filePath!,
-        outputPath: 'output/video.mp4',
-      );
-      // await videoComposerService.createAndShareVideoToTikTok();
-      // setState(() {
-      //   _isVideoShared = true;
-      // });
+      //If we have more time, we can work on this to make the functionality more extended 
     } else {
-      print('Video has already been shared.');
+      // print('Video has already been shared.');
     }
   }
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiroai/widgets/text_bubble.dart';
-import 'package:wiroai/screens/music_screen.dart'; // Import the MusicScreen
-import 'package:wiroai/api_service.dart'; // Import the fetchMusic method
-import 'music_screen.dart'; // Import the MusicScreen
+import 'package:wiroai/screens/music_screen.dart'; 
+import 'package:wiroai/api_service.dart'; 
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -17,18 +16,18 @@ class QuestionaireStageScreen extends StatefulWidget {
 
 class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
   final List<Map<String, dynamic>> _messages =
-      []; // List to hold chat messages and associated actions
+      []; 
   final TextEditingController _messageController =
-      TextEditingController(); // Controller for the text input field
-  final List<String> _answers = List.filled(4, ''); // List to hold answers
+      TextEditingController(); 
+  final List<String> _answers = List.filled(4, ''); 
   final List<String> _questions = [
     'How do you feel this morning?',
     'How is your afternoon going?',
     'How was your evening?',
     'Here is the following music!'
-  ]; // List of questions
-  int _currentQuestionIndex = 0; // Index of the current question
-  bool _canType = false; // Flag to indicate if the user can type
+  ]; 
+  int _currentQuestionIndex = 0; 
+  bool _canType = false; 
 
   @override
   void initState() {
@@ -39,20 +38,15 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
   // Function to decode Base64 string and save as MP3
   Future<void> decodeBase64ToMp3(String base64Str, String fileName) async {
     try {
-      // Decode the Base64 string to bytes
       Uint8List bytes = base64Decode(base64Str);
-
-      // Get the directory to save the file
       Directory dir = await getApplicationDocumentsDirectory();
       String dirPath = '${dir.path}/$fileName';
       File file = File(dirPath);
-
-      // Write bytes to the file
       await file.writeAsBytes(bytes);
 
-      print('MP3 file saved to $dirPath');
+      // print('MP3 file saved to $dirPath');
     } catch (e) {
-      print('An error occurred while decoding or writing the file: $e');
+      // print('An error occurred while decoding or writing the file: $e');
     }
   }
 
@@ -66,7 +60,6 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     final hour = now.hour;
 
     if (hour == 0) {
-      // Clear all saved preferences if hour is zero
       await prefs.clear();
       setState(() {
         _messages.clear();
@@ -108,7 +101,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       } else {
         print('Failed to fetch music: ${response.errorMessage}');
       }
-      _showMusic(); // Call the method to show music
+      _showMusic(); 
     }
   }
 
@@ -127,7 +120,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       _messages.add({
         'text': _questions[index],
         'buttonText': null,
-        'isUserMessage': false, // System message
+        'isUserMessage': false, 
       });
       _currentQuestionIndex = index;
     });
@@ -140,20 +133,19 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
         _messages.add({
           'text': message,
           'buttonText': null,
-          'isUserMessage': true, // User message
-        }); // Add the message to the list
-        _answers[_currentQuestionIndex] = message; // Save the answer
-        _canType = false; // Disable typing until the next question appears
+          'isUserMessage': true, 
+        }); 
+        _answers[_currentQuestionIndex] = message; 
+        _canType = false; 
       });
-      _messageController.clear(); // Clear the text field
-      FocusScope.of(context).unfocus(); // Close the keyboard
+      _messageController.clear(); 
+      FocusScope.of(context).unfocus(); 
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('answer_$_currentQuestionIndex', message);
 
-      _saveMessages(); // Save the messages
-
-      _loadAnswers(); // reload the answer
+      _saveMessages();
+      _loadAnswers(); 
     }
   }
 
@@ -174,12 +166,12 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       hour = 0;
     }
 
-    return hour; // Return as an integer
+    return hour; 
   }
 
   void _lockPrompt() {
     setState(() {
-      _canType = false; // Lock the prompt
+      _canType = false; 
     });
   }
 
@@ -194,7 +186,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       _messages.add({
         'text': 'Here is the music!',
         'buttonText': 'Listen to Music',
-        'isUserMessage': false, // System message
+        'isUserMessage': false, 
       });
     });
   }
@@ -210,14 +202,14 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back,
-              color: Colors.white), // Set back button color to white
+              color: Colors.white), 
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           'Chat',
-          style: TextStyle(color: Colors.white), // Set text color to white
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black, // AppBar color
+        backgroundColor: Colors.black, 
       ),
       body: Column(
         children: [
@@ -240,19 +232,19 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                       TextBubble(
                         message: text,
                         fromUser:
-                            isUserMessage, // Show message on the correct side
+                            isUserMessage,
                       ),
                       SizedBox(
-                          height: 10.0), // Space between text bubble and button
-                      if (!isUserMessage) // Show button only for system messages
+                          height: 10.0), 
+                      if (!isUserMessage)
                         ElevatedButton(
-                          onPressed: _listenToMusic, // Navigate to MusicScreen
+                          onPressed: _listenToMusic, 
                           child: Text(buttonText,
                               style: TextStyle(
                                   color: Colors
-                                      .white)), // Set button text color to white
+                                      .white)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black, // Button color
+                            backgroundColor: Colors.black, 
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -267,7 +259,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                 return TextBubble(
                   message: text,
                   fromUser:
-                      isUserMessage, // Set to true for user messages, false for system messages
+                      isUserMessage,
                 );
               },
             ),
@@ -291,21 +283,21 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                     ),
                     onSubmitted: (value) => _sendMessage(),
                     enabled:
-                        _canType, // Disable the TextField based on _canType
+                        _canType,
                   ),
                 ),
                 SizedBox(
-                    width: 8.0), // Space between text field and send button
+                    width: 8.0), 
                 ElevatedButton(
                   onPressed: _canType
                       ? _sendMessage
-                      : null, // Disable the send button based on _canType
+                      : null, 
                   child:
-                      Icon(Icons.send, color: Colors.white), // Send button icon
+                      Icon(Icons.send, color: Colors.white), 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFDC788A), // Send button color
-                    shape: CircleBorder(), // Circular shape for the button
-                    padding: EdgeInsets.all(12.0), // Padding for the button
+                    backgroundColor: Color(0xFFDC788A), 
+                    shape: CircleBorder(), 
+                    padding: EdgeInsets.all(12.0), 
                   ),
                 ),
               ],
