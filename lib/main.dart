@@ -10,8 +10,8 @@ void main(List<String> args) async {
 
 Future<void> _resetSharedPreferences() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print(prefs.getKeys());
-  await prefs.clear(); // Clear all data from SharedPreferences
+  // print(prefs.getKeys());
+  // await prefs.clear(); // Clear all data from SharedPreferences !! Only uncomment for debug purpose
 }
 
 class MainApp extends StatelessWidget {

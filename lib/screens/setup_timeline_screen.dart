@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'questionaire_stage_screen.dart';  // Import the QuestionaireStageScreen
+import 'questionaire_stage_screen.dart';  
 import 'package:wiroai/utils/time_utils.dart';
 
 class SetupTimelineScreen extends StatefulWidget {
@@ -31,14 +31,14 @@ class _SetupTimelineScreenState extends State<SetupTimelineScreen> {
   void initState() {
     super.initState();
     for (int i = 0; i < 4; i++) {
-      _selectedTimeslots[i] = _timeslots[0]; // Default value
+      _selectedTimeslots[i] = _timeslots[0]; 
     }
   }
 
   void _saveSetupComplete() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     
-    // Store each timeslot with its corresponding label in SharedPreferences
+    
     prefs.setString('morning', _selectedTimeslots[0]);
     prefs.setString('afternoon', _selectedTimeslots[1]);
     prefs.setString('evening', _selectedTimeslots[2]);
