@@ -98,6 +98,7 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
                 height: 30.0), // Space between question text and text input
