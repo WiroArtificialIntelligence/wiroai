@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wiroai/widgets/text_bubble.dart';
-import 'package:wiroai/screens/music_screen.dart'; 
-import 'package:wiroai/api_service.dart'; 
+import 'package:wiroai/screens/music_screen.dart';
+import 'package:wiroai/api_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
@@ -15,19 +15,17 @@ class QuestionaireStageScreen extends StatefulWidget {
 }
 
 class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
-  final List<Map<String, dynamic>> _messages =
-      []; 
-  final TextEditingController _messageController =
-      TextEditingController(); 
-  final List<String> _answers = List.filled(4, ''); 
+  final List<Map<String, dynamic>> _messages = [];
+  final TextEditingController _messageController = TextEditingController();
+  final List<String> _answers = List.filled(4, '');
   final List<String> _questions = [
     'How do you feel this morning?',
     'How is your afternoon going?',
     'How was your evening?',
     'Here is the following music!'
-  ]; 
-  int _currentQuestionIndex = 0; 
-  bool _canType = false; 
+  ];
+  int _currentQuestionIndex = 0;
+  bool _canType = false;
 
   @override
   void initState() {
@@ -101,7 +99,6 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       } else {
         print('Failed to fetch music: ${response.errorMessage}');
       }
-      _showMusic(); 
     }
   }
 
@@ -120,7 +117,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       _messages.add({
         'text': _questions[index],
         'buttonText': null,
-        'isUserMessage': false, 
+        'isUserMessage': false,
       });
       _currentQuestionIndex = index;
     });
@@ -133,19 +130,19 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
         _messages.add({
           'text': message,
           'buttonText': null,
-          'isUserMessage': true, 
-        }); 
-        _answers[_currentQuestionIndex] = message; 
-        _canType = false; 
+          'isUserMessage': true,
+        });
+        _answers[_currentQuestionIndex] = message;
+        _canType = false;
       });
-      _messageController.clear(); 
-      FocusScope.of(context).unfocus(); 
+      _messageController.clear();
+      FocusScope.of(context).unfocus();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('answer_$_currentQuestionIndex', message);
 
       _saveMessages();
-      _loadAnswers(); 
+      _loadAnswers();
     }
   }
 
@@ -166,12 +163,12 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       hour = 0;
     }
 
-    return hour; 
+    return hour;
   }
 
   void _lockPrompt() {
     setState(() {
-      _canType = false; 
+      _canType = false;
     });
   }
 
@@ -186,7 +183,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
       _messages.add({
         'text': 'Here is the music!',
         'buttonText': 'Listen to Music',
-        'isUserMessage': false, 
+        'isUserMessage': false,
       });
     });
   }
@@ -201,15 +198,14 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
-              color: Colors.white), 
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
           'Chat',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black, 
+        backgroundColor: Colors.black,
       ),
       body: Column(
         children: [
@@ -231,20 +227,16 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                     children: [
                       TextBubble(
                         message: text,
-                        fromUser:
-                            isUserMessage,
+                        fromUser: isUserMessage,
                       ),
-                      SizedBox(
-                          height: 10.0), 
+                      SizedBox(height: 10.0),
                       if (!isUserMessage)
                         ElevatedButton(
-                          onPressed: _listenToMusic, 
+                          onPressed: _listenToMusic,
                           child: Text(buttonText,
-                              style: TextStyle(
-                                  color: Colors
-                                      .white)),
+                              style: TextStyle(color: Colors.white)),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black, 
+                            backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -258,8 +250,7 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
 
                 return TextBubble(
                   message: text,
-                  fromUser:
-                      isUserMessage,
+                  fromUser: isUserMessage,
                 );
               },
             ),
@@ -282,22 +273,17 @@ class _QuestionaireStageScreenState extends State<QuestionaireStageScreen> {
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
                     onSubmitted: (value) => _sendMessage(),
-                    enabled:
-                        _canType,
+                    enabled: _canType,
                   ),
                 ),
-                SizedBox(
-                    width: 8.0), 
+                SizedBox(width: 8.0),
                 ElevatedButton(
-                  onPressed: _canType
-                      ? _sendMessage
-                      : null, 
-                  child:
-                      Icon(Icons.send, color: Colors.white), 
+                  onPressed: _canType ? _sendMessage : null,
+                  child: Icon(Icons.send, color: Colors.white),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFDC788A), 
-                    shape: CircleBorder(), 
-                    padding: EdgeInsets.all(12.0), 
+                    backgroundColor: Color(0xFFDC788A),
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(12.0),
                   ),
                 ),
               ],

@@ -5,7 +5,8 @@ import 'package:wiroai/screens/setup_timeline_screen.dart';
 class InitialStageScreen extends StatefulWidget {
   final int initialQuestionIndex;
 
-  const InitialStageScreen({Key? key, this.initialQuestionIndex = 0}) : super(key: key);
+  const InitialStageScreen({Key? key, this.initialQuestionIndex = 0})
+      : super(key: key);
 
   @override
   _InitialStageScreenState createState() => _InitialStageScreenState();
@@ -14,10 +15,10 @@ class InitialStageScreen extends StatefulWidget {
 class _InitialStageScreenState extends State<InitialStageScreen> {
   final TextEditingController _controller = TextEditingController();
   final List<String> _questions = [
-    'What is your first question?',
-    'What is your second question?',
-    'What is your third question?',
-    'What is your fourth question?',
+    'What genre of music do you prefer?',
+    'Who is your favorite musician or band?',
+    'What mood do you want your music to reflect?',
+    'Do you have a favorite song or album?',
   ];
   int _currentQuestionIndex = 0;
   List<String> _answers = [];
@@ -34,7 +35,8 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _answers = prefs.getStringList('answers') ?? [];
-      _currentQuestionIndex = _answers.length; // Continue from the last answered question
+      _currentQuestionIndex =
+          _answers.length; // Continue from the last answered question
     });
   }
 
@@ -64,7 +66,6 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
   }
 
   void _goToNextStep() {
-    
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SetupTimelineScreen()),
@@ -98,7 +99,8 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 30.0), // Space between question text and text input
+            SizedBox(
+                height: 30.0), // Space between question text and text input
             // Text Input Prompt
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -114,28 +116,29 @@ class _InitialStageScreenState extends State<InitialStageScreen> {
             SizedBox(height: 30.0), // Space between text input and button
             // Show button after all questions are answered
             if (_currentQuestionIndex == _questions.length - 1)
-            ElevatedButton(
-              onPressed: _goToNextStep,
-              child: Text(
-                'Go to Next Step',
-                style: TextStyle(color: Colors.white),  // Set text color to white
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,  // Set button color to black
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),  // Rounded corners
+              ElevatedButton(
+                onPressed: _goToNextStep,
+                child: Text(
+                  'Go to Next Step',
+                  style:
+                      TextStyle(color: Colors.white), // Set text color to white
                 ),
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),  // Button padding
-              ),
-            )
-
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Set button color to black
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Rounded corners
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 30.0), // Button padding
+                ),
+              )
           ],
         ),
       ),
     );
   }
 }
-
 
 void main() {
   runApp(MaterialApp(
